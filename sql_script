@@ -1,0 +1,15 @@
+CREATE TABLE signalements_vbg (
+    id SERIAL PRIMARY KEY,
+    date_signalement DATE,
+    type_violence VARCHAR(50),
+    age_victime INT CHECK (age_victime >= 0),
+    departement VARCHAR(50),
+    lieu_incident VARCHAR(50),
+    lien_agresseur VARCHAR(50),
+    statut_signalement VARCHAR(50),
+    action_entreprise VARCHAR(50),
+    niveau_education VARCHAR(50),
+    heure_incident VARCHAR(50),
+    source_signalement VARCHAR(50),
+    delai_signalement INT CHECK (delai_signalement >= 0)
+);
