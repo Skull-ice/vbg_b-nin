@@ -1,0 +1,87 @@
+# Notebook d'analyse : Violences basées sur le genre au Bénin
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 1. Charger les données simulées
+df = pd.read_csv("C:/Users/lenovo/Downloads/signalements_bigdata_benin.csv")  # Remplace par ton chemin local si besoin
+
+# 2. Aperçu rapide des données
+print(df.head())
+print(df.describe(include='all'))
+print(df.isnull().sum())
+
+# 3. Statistiques générales
+print("Nombre total de signalements :", len(df))
+print("Période couverte :", df['date_signalement'].min(), "à", df['date_signalement'].max())
+
+# 4. Répartition des types de violences
+plt.figure(figsize=(10,6))
+sns.countplot(data=df, y='type_violence', order=df['type_violence'].value_counts().index, palette='coolwarm')
+plt.title('Répartition des types de violences signalées')
+plt.xlabel('Nombre de cas')
+plt.ylabel('Type de violence')
+plt.show()
+
+# 5. Répartition par département
+plt.figure(figsize=(10,6))
+sns.countplot(data=df, y='departement', order=df['departement'].value_counts().index, palette='viridis')
+plt.title('Répartition géographique des signalements')
+plt.xlabel('Nombre de cas')
+plt.ylabel('Département')
+plt.show()
+
+# 6. Âge des victimes
+plt.figure(figsize=(10,6))
+sns.histplot(df['age_victime'], bins=20, kde=True, color='orange')
+plt.title('Distribution de l’âge des victimes')
+plt.xlabel('Âge')
+plt.ylabel('Nombre de cas')
+plt.show()
+
+# 7. Délai de signalement
+plt.figure(figsize=(10,6))
+sns.boxplot(data=df, x='delai_signalement', color='skyblue')
+plt.title('Délai de signalement des incidents')
+plt.xlabel('Délai (en jours)')
+plt.show()
+
+# 8. Lieux d'incidents
+plt.figure(figsize=(10,6))
+sns.countplot(data=df, y='lieu_incident', order=df['lieu_incident'].value_counts().index, palette='cubehelix')
+plt.title('Lieux des incidents signalés')
+plt.xlabel('Nombre de cas')
+plt.ylabel('Lieu')
+plt.show()
+
+# 9. Liens avec l’agresseur
+plt.figure(figsize=(10,6))
+sns.countplot(data=df, y='lien_agresseur', order=df['lien_agresseur'].value_counts().index, palette='magma')
+plt.title('Liens avec l’agresseur')
+plt.xlabel('Nombre de cas')
+plt.ylabel('Lien')
+plt.show()
+
+# 10. Source du signalement
+plt.figure(figsize=(10,6))
+sns.countplot(data=df, y='source_signalement', order=df['source_signalement'].value_counts().index, palette='pastel')
+plt.title('Canaux utilisés pour signaler les violences')
+plt.xlabel('Nombre de cas')
+plt.ylabel('Source')
+plt.show()
+
+# 11. Export d’un résumé des indicateurs clés
+resume = {
+    "Nombre total de cas": len(df),
+    "Violence la plus fréquente": df['type_violence'].mode()[0],
+    "Département le plus touché": df['departement'].mode()[0],
+    "Âge moyen des victimes": round(df['age_victime'].mean(), 1),
+    "Délai moyen de signalement (jours)": round(df['delai_signalement'].mean(), 1),
+}
+resume_df = pd.DataFrame(list(resume.items()), columns=["Indicateur", "Valeur"])
+resume_df.to_csv("resume_violences_vbg_benin.csv", index=False)
+print(resume_df)
+
+print("Analyse terminée ✅")
